@@ -10,9 +10,9 @@ class ClientsTableSeeder extends Seeder
     public function run()
     {
         DB::table('clients')->insert([
-            'nom' => 'Doe',
-            'prenom' => 'John',
-            'email' => 'john@example.com',
+            'nom' => 'bella',
+            'prenom' => 'fatima zohra',
+            'email' => 'fatimazohrabella@gmail.com',
             'telephone' => '123456789',
             'password' => 'password123', // Mot de passe en clair pour test
         ]);

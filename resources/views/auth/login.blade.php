@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #8a9edb, #387b3c,#9fe4a3);
+            background: linear-gradient(135deg, #8a9edb, #387b3c, #9fe4a3);
             margin: 0;
             padding: 0;
             display: flex;
@@ -26,7 +26,6 @@
             max-width: 450px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             margin-top: 100px;
-           
             margin-left: 80px;
         }
 
@@ -112,15 +111,76 @@
             margin-right: -100px;
             margin-bottom: 2rem;
             margin-top: 100px;
-           
         }
 
         .logo img {
             max-width: 600px;
             height: 130px;
         }
+
+        .error-message {
+            color: red;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-container input[type="password"] {
+            width: 100%;
+            padding-right: 40px; 
+            box-sizing: border-box;
+        }
+
+        .password-container .eye-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px; 
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 1.25rem; 
+            color: #333; 
+            z-index: 1; 
+        }
+        .pwdv,
+.pwd,
+.email {
+  height: 25px;
+  opacity: 0.3;
+  left: 92%;
+}
+.pwdv,
+.pwd {
+  cursor: pointer;
+}
+.pwdv {
+  display: none;
+  opacity: 0.7;
+}
+.pwdv:hover,
+.pwd:hover {
+  opacity: 0.7;
+}
     </style>
     <script>
+       document.getElementById('showPwd').addEventListener('change', function() {
+            const passwordField = document.getElementById('password');
+            const pwdIcon = document.querySelector('.pwd');
+            const pwdvIcon = document.querySelector('.pwdv');
+            if (this.checked) {
+                passwordField.type = 'text';
+                pwdIcon.style.display = 'none';
+                pwdvIcon.style.display = 'inline';
+            } else {
+                passwordField.type = 'password';
+                pwdIcon.style.display = 'inline';
+                pwdvIcon.style.display = 'none';
+            }
+        });
+
         function toggleLoginForm() {
             var userType = document.getElementById('user_type').value;
             var clientForm = document.getElementById('client_login_form');
@@ -145,6 +205,13 @@
     </div>
     <div class="container">
         <h2>Login</h2>
+
+        @if ($errors->any())
+            <div class="error-message">
+                <p>{{ $errors->first() }}</p>
+            </div>
+        @endif
+
         <div class="form-group">
             <label for="user_type">I am a:</label>
             <select id="user_type" name="user_type" onchange="toggleLoginForm()" required>
@@ -155,8 +222,7 @@
         </div>
 
         <div id="client_login_form" style="display: none;">
-            <h3>Client Login</h3>
-            <form method="POST" action="{{ route('client.login.submit') }}">
+            <form method="POST" action="{{ route('client.login') }}">
                 @csrf
                 <div class="form-group">
                     <label for="client_email">Email:</label>
@@ -164,17 +230,22 @@
                 </div>
                 <div class="form-group">
                     <label for="client_password">Password:</label>
-                    <input type="password" id="client_password" name="password" required>
+                    <div class="password-container">
+                        <input type="password" id="client_password" name="password" required>
+                        
+                    </div>
+                    <label for="showPwd" class="checkbox-label">
+                        <input type="checkbox" id="showPwd" />
+                        <img src="{{ asset('images/visibility.svg') }}" alt="" class="pwd" />
+                        <img src="{{ asset('images/visibilityOff.svg') }}" alt="" class="pwdv" />
+                    </label>
                 </div>
                 <button type="submit">Login as Client</button>
-              
-                <a href="{{ route('client.register') }}">Register</a>
             </form>
         </div>
 
         <div id="personnel_login_form" style="display: none;">
-            <h3>Personnel Login</h3>
-            <form method="POST" action="{{ route('personnel.login.submit') }}">
+            <form method="POST" action="{{ route('personnel.login') }}">
                 @csrf
                 <div class="form-group">
                     <label for="personnel_email">Email:</label>
@@ -182,10 +253,16 @@
                 </div>
                 <div class="form-group">
                     <label for="personnel_password">Password:</label>
-                    <input type="password" id="personnel_password" name="password" required>
+                    <div class="password-container">
+                        <input type="password" id="personnel_password" name="password" required>
+                    </div>
+                    <label for="showPwd" class="checkbox-label">
+                        <input type="checkbox" id="showPwd" />
+                        <img src="public/images/visibility.svg" alt="" class="pwd" />
+                        <img src="public/images/visibilityOff.svg" alt="" class="pwdv" />
+                    </label>
                 </div>
                 <button type="submit">Login as Personnel</button>
-               
             </form>
         </div>
     </div>

@@ -1,7 +1,11 @@
-<?php 
+<?php
+
 use App\Http\Controllers\ClientAuthController;
 use App\Http\Controllers\ClientRegisterController;
 use App\Http\Controllers\PersonnelAuthController;
+use App\Http\Controllers\ClientHomeController;
+use App\Http\Controllers\ClientReclamationController;
+use App\Http\Controllers\PersonnelHomeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Password;
 
@@ -29,3 +33,11 @@ Route::get('/personnel/home', [PersonnelAuthController::class, 'home'])->name('p
 // Route pour l'inscription des clients
 Route::get('/client/register', [ClientRegisterController::class, 'showRegistrationForm'])->name('client.register');
 Route::post('/client/register', [ClientRegisterController::class, 'register'])->name('client.register.submit');
+// Routes pour les pages d'accueil
+Route::get('/client/home', [ClientHomeController::class, 'index'])->name('client.home');
+Route::get('/personnel/home', [PersonnelHomeController::class, 'index'])->name('personnel.home');
+// Routes pour le client
+Route::get('/client/reclamations', [ClientReclamationController::class, 'index'])->name('client.reclamations');
+Route::get('/client/reclamation/create', [ClientReclamationController::class, 'create'])->name('client.reclamation.create');
+Route::post('/client/logout', [ClientAuthController::class, 'logout'])->name('client.logout');
+Route::post('/client/read', [ClientAuthController::class, 'read'])->name('client.read');
